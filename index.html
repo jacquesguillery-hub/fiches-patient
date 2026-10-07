@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fiches d'information patient — risques des actes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F4F6F5; --sheet:#FFFFFF; --ink:#1A2530; --muted:#55626E; --line:#D5DCDA;
+  --sage:#2E6B63; --sage-soft:#E3EEEB; --grave:#8E2A37; --grave-soft:#F6E6E8; --warn:#8A5A00; --warn-soft:#FBF1DC;
+  --serif:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans:"Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --paper:#141B1F; --sheet:#1C252A; --ink:#E6ECEA; --muted:#A3B0B5; --line:#33424A;
+  --sage:#7FC1B5; --sage-soft:#1F3532; --grave:#F0A3AE; --grave-soft:#3A2227; --warn:#E8C27A; --warn-soft:#3A3020;
+}}
+:root[data-theme="dark"]{
+  --paper:#141B1F; --sheet:#1C252A; --ink:#E6ECEA; --muted:#A3B0B5; --line:#33424A;
+  --sage:#7FC1B5; --sage-soft:#1F3532; --grave:#F0A3AE; --grave-soft:#3A2227; --warn:#E8C27A; --warn-soft:#3A3020;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55}
+a{color:var(--sage)}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sage);outline-offset:2px}
+
+.top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+  padding:1rem clamp(1rem,4vw,2.5rem);border-bottom:1px solid var(--line);background:var(--sheet)}
+.brand{display:flex;align-items:center;gap:.7rem;text-decoration:none;color:var(--ink)}
+.brand-mark{width:34px;height:42px;border:2px solid var(--sage);border-radius:3px;position:relative;flex:none}
+.brand-mark::before,.brand-mark::after{content:"";position:absolute;left:6px;right:6px;height:2px;background:var(--sage)}
+.brand-mark::before{top:10px}.brand-mark::after{top:17px;right:12px}
+.brand b{font-family:var(--serif);font-size:1.2rem;display:block;line-height:1.1}
+.brand small{color:var(--muted);font-size:.85rem}
+.nav{display:flex;gap:.3rem}
+.nav a{padding:.45rem .8rem;border-radius:6px;text-decoration:none;color:var(--ink)}
+.nav a[aria-current="page"]{background:var(--sage-soft);color:var(--sage);font-weight:700}
+
+main{max-width:1180px;margin:0 auto;padding:clamp(1.2rem,4vw,2.5rem)}
+
+/* Accueil */
+.intro{display:grid;grid-template-columns:1.3fr 1fr;gap:2.5rem;align-items:end;margin-bottom:2.2rem}
+.intro h1{font-family:var(--serif);font-weight:600;font-size:clamp(2rem,4.6vw,3.1rem);line-height:1.08;margin:0 0 .8rem;letter-spacing:-.01em}
+.intro p{margin:0;color:var(--muted);max-width:60ch}
+.howto{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:1.1rem 1.3rem}
+.howto ol{margin:.4rem 0 0;padding-left:1.2rem}
+.howto li{margin:.25rem 0}
+.howto h2{font-size:1rem;margin:0}
+
+.tools{display:flex;gap:.8rem;flex-wrap:wrap;align-items:center;margin-bottom:1.2rem}
+.search{flex:1 1 280px;position:relative}
+.search input{width:100%;padding:.75rem 1rem .75rem 2.6rem;border:1.5px solid var(--line);border-radius:8px;background:var(--sheet)}
+.search svg{position:absolute;left:.85rem;top:50%;transform:translateY(-50%);color:var(--muted)}
+.chips{display:flex;gap:.4rem;flex-wrap:wrap}
+.chip{border:1.5px solid var(--line);background:var(--sheet);border-radius:999px;padding:.35rem .85rem;cursor:pointer;font-size:.92rem}
+.chip[aria-pressed="true"]{border-color:var(--sage);background:var(--sage-soft);color:var(--sage);font-weight:700}
+
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1rem}
+.doc{display:flex;flex-direction:column;background:var(--sheet);border:1px solid var(--line);border-radius:4px 14px 4px 4px;
+  padding:1.1rem 1.2rem 1rem;text-decoration:none;color:var(--ink);position:relative;min-height:190px}
+.doc::after{content:"";position:absolute;top:-1px;right:-1px;width:22px;height:22px;background:linear-gradient(225deg,var(--paper) 50%,var(--line) 50%);border-bottom-left-radius:4px}
+.doc:hover{border-color:var(--sage)}
+.doc .spec{color:var(--sage);font-size:.85rem;font-weight:700}
+.doc h3{font-family:var(--serif);font-size:1.3rem;margin:.3rem 0 .4rem;line-height:1.2}
+.doc p{margin:0;color:var(--muted);font-size:.95rem;flex:1}
+.doc .meta{margin-top:.9rem;font-size:.82rem;color:var(--muted);display:flex;justify-content:space-between}
+.empty{padding:2rem;text-align:center;color:var(--muted);border:1.5px dashed var(--line);border-radius:10px}
+
+/* Fiche */
+.fiche-layout{display:grid;grid-template-columns:300px 1fr;gap:2rem;align-items:start}
+.panel{position:sticky;top:calc(1rem + env(safe-area-inset-top,0px));background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:1.2rem}
+.panel h2{font-size:1.05rem;margin:0 0 .2rem}
+.panel .hint{font-size:.88rem;color:var(--muted);margin:0 0 1rem}
+.field{margin-bottom:.8rem}
+.field label{display:block;font-size:.88rem;font-weight:700;margin-bottom:.25rem}
+.field input,.field textarea{width:100%;padding:.55rem .7rem;border:1.5px solid var(--line);border-radius:6px;background:var(--paper)}
+.field textarea{min-height:80px;resize:vertical}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;width:100%;padding:.75rem 1rem;border-radius:8px;border:0;
+  background:var(--sage);color:#fff;font-weight:700;cursor:pointer;margin-top:.4rem}
+:root[data-theme="dark"] .btn{color:#0F1A18}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn{color:#0F1A18}}
+.btn.ghost{background:transparent;color:var(--sage);border:1.5px solid var(--sage)}
+.back{display:inline-block;margin-bottom:1rem;text-decoration:none;font-weight:700}
+.printnote{font-size:.82rem;color:var(--muted);margin-top:.6rem}
+
+.sheet-wrap{overflow-x:auto}
+.sheet{background:#fff;color:#1A2530;max-width:820px;margin:0 auto;padding:clamp(1.4rem,5vw,3.2rem) clamp(1.2rem,5vw,3.4rem);
+  box-shadow:0 1px 0 #D5DCDA,0 12px 30px -18px rgba(26,37,48,.45);border-radius:2px;font-family:var(--serif);font-size:1.03rem;line-height:1.65}
+.sheet header{display:flex;justify-content:space-between;gap:1rem;border-bottom:2px solid #2E6B63;padding-bottom:.8rem;margin-bottom:1.4rem;font-family:var(--sans);font-size:.85rem;color:#55626E;flex-wrap:wrap}
+.sheet header strong{color:#1A2530}
+.sheet h1{font-size:clamp(1.6rem,3.6vw,2.2rem);line-height:1.15;margin:0 0 .3rem;font-weight:700}
+.sheet .sub{font-family:var(--sans);color:#55626E;margin:0 0 1.6rem}
+.sheet h2{font-family:var(--sans);font-size:1.05rem;margin:1.6rem 0 .4rem;color:#2E6B63}
+.sheet p{margin:.3rem 0 .6rem}
+.sheet ul{margin:.3rem 0 .6rem;padding-left:1.2rem}
+.sheet li{margin:.2rem 0}
+.box{border-left:4px solid;padding:.7rem 1rem;margin:.8rem 0;border-radius:0 6px 6px 0}
+.box h2{margin-top:0 !important}
+.box.freq{border-color:#8A5A00;background:#FBF1DC}
+.box.freq h2{color:#6E4700}
+.box.grave{border-color:#8E2A37;background:#F6E6E8}
+.box.grave h2{color:#8E2A37}
+.box.alert{border-color:#1A2530;background:#EEF1F0}
+.box.alert h2{color:#1A2530}
+.box.perso{border-color:#2E6B63;background:#E3EEEB}
+.sheet .src{font-family:var(--sans);font-size:.78rem;color:#55626E;margin-top:1.4rem}
+.cut{margin:2.2rem -1rem 1.4rem;border-top:2px dashed #9AA6A3;position:relative}
+.cut span{position:absolute;top:-.8rem;left:50%;transform:translateX(-50%);background:#fff;padding:0 .6rem;font-family:var(--sans);font-size:.78rem;color:#55626E}
+.attest h2{margin-top:0}
+.attest p{font-size:.97rem}
+.sign{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.2rem;font-family:var(--sans);font-size:.85rem}
+.sign div{border-top:1px solid #1A2530;padding-top:.3rem;min-height:70px}
+.blank{display:inline-block;min-width:12ch;border-bottom:1px solid #1A2530}
+
+/* Cadre légal */
+.legal{max-width:760px}
+.legal h1{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.5rem);margin:0 0 1rem;line-height:1.15}
+.legal h2{font-family:var(--serif);font-size:1.35rem;margin:2rem 0 .5rem}
+.legal blockquote{margin:1rem 0;padding:.8rem 1.1rem;border-left:4px solid var(--sage);background:var(--sheet);border-radius:0 8px 8px 0}
+.legal .warnbox{background:var(--warn-soft);border:1px solid var(--warn);color:var(--ink);padding:1rem 1.2rem;border-radius:8px}
+
+.banner{background:var(--warn-soft);color:var(--ink);border-bottom:1px solid var(--line);padding:.55rem clamp(1rem,4vw,2.5rem);font-size:.9rem}
+.banner b{color:var(--warn)}
+footer{max-width:1180px;margin:2rem auto 0;padding:1.5rem clamp(1.2rem,4vw,2.5rem) 2.5rem;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line)}
+
+@media (max-width:860px){
+  .intro{grid-template-columns:1fr;gap:1.2rem}
+  .fiche-layout{grid-template-columns:1fr}
+  .panel{position:static}
+}
+@media (max-width:520px){.sign{grid-template-columns:1fr}}
+
+@media print{
+  @page{size:A4;margin:14mm}
+  body{background:#fff}
+  .top,.banner,.panel,.back,footer,.noprint{display:none !important}
+  main{padding:0;max-width:none}
+  .fiche-layout{display:block}
+  .sheet{box-shadow:none;padding:0;max-width:none;font-size:11pt}
+  .box{break-inside:avoid}
+  .attest{break-inside:avoid}
+  .cut span{background:#fff}
+}
+@media (prefers-reduced-motion:no-preference){
+  .sheet{animation:rise .35s ease-out}
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+}
+</style>
+</head>
+<body>
+<div class="banner"><b>Modèles à valider.</b> Ces fiches sont des bases de travail : relisez-les, adaptez-les à votre pratique et aux recommandations de votre société savante avant toute remise.</div>
+<div class="top">
+  <a class="brand" href="#/"><span class="brand-mark" aria-hidden="true"></span><span><b>Fiches Info Patient</b><small>Information sur les risques des actes</small></span></a>
+  <nav class="nav" aria-label="Navigation principale">
+    <a href="#/" data-nav="home">Les fiches</a>
+    <a href="#/cadre-legal" data-nav="legal">Cadre légal</a>
+  </nav>
+</div>
+<main id="app"></main>
+<footer>Ces documents complètent l'entretien individuel et ne le remplacent pas (art. L1111-2 du Code de la santé publique). Ils ne constituent pas un avis médical ou juridique.</footer>
+
+<script>
+const FICHES = [
+{
+ id:"coloscopie", titre:"Coloscopie", spec:"Gastro-entérologie", maj:"2026-10",
+ resume:"Examen de l'intérieur du côlon à l'aide d'un endoscope souple, avec ablation éventuelle de polypes.",
+ but:"La coloscopie permet d'examiner la paroi du côlon et du rectum pour rechercher la cause de vos symptômes, dépister un cancer colorectal ou surveiller une maladie connue. Elle permet aussi de retirer des polypes (petites excroissances) qui pourraient évoluer vers un cancer.",
+ deroule:["Une préparation (laxatif) est nécessaire la veille et/ou le jour même pour que le côlon soit parfaitement propre.","L'examen se fait le plus souvent sous anesthésie générale ou sédation. Une consultation d'anesthésie est alors prévue.","Le médecin introduit l'endoscope par l'anus et insuffle de l'air ou du gaz pour déplisser la paroi.","Des prélèvements (biopsies) ou l'ablation de polypes peuvent être réalisés au cours de l'examen, sans douleur."],
+ alternatives:"Selon la situation : coloscanner (scanner du côlon), test immunologique de dépistage dans les selles, vidéocapsule. Ces examens ne permettent pas de retirer les polypes ni de faire des biopsies.",
+ frequents:["Inconfort lié à la préparation (nausées, crampes, envies fréquentes).","Ballonnements et gaz dans les heures suivant l'examen.","Effets liés à la sédation : somnolence, nausées."],
+ graves:["Perforation de la paroi du côlon : rare, plus fréquente en cas d'ablation de gros polypes. Elle peut nécessiter une intervention chirurgicale.","Hémorragie, surtout après ablation de polype, parfois retardée jusqu'à 2 semaines après l'examen.","Complications liées à l'anesthésie (voir la fiche anesthésie).","Une lésion peut, rarement, ne pas être vue malgré un examen bien conduit, notamment si la préparation est insuffisante."],
+ apres:"Ne conduisez pas et ne prenez pas de décision importante dans les 24 heures si vous avez été endormi(e). Votre médecin vous indiquera quand reprendre vos traitements, en particulier les anticoagulants.",
+ alerte:["Douleurs abdominales intenses ou qui augmentent","Fièvre ou frissons","Sang rouge abondant dans les selles","Vomissements, malaise"],
+ sources:"Recommandations de la Société française d'endoscopie digestive (SFED) — à vérifier et compléter."
+},
+{
+ id:"dents-sagesse", titre:"Extraction des dents de sagesse", spec:"Chirurgie dentaire", maj:"2026-10",
+ resume:"Ablation chirurgicale d'une ou plusieurs troisièmes molaires, sous anesthésie locale ou générale.",
+ but:"Retirer des dents de sagesse qui provoquent ou risquent de provoquer des infections, des douleurs, des caries sur les dents voisines, des kystes ou des problèmes d'alignement.",
+ deroule:["L'intervention se fait sous anesthésie locale, ou sous anesthésie générale selon les cas.","La gencive est incisée ; l'os peut être légèrement fraisé et la dent coupée en plusieurs morceaux pour faciliter son retrait.","La gencive est refermée par des points de suture, souvent résorbables."],
+ alternatives:"Surveillance régulière clinique et radiologique si les dents ne posent pas de problème actuel. Le choix dépend de la position des dents et de vos symptômes.",
+ frequents:["Douleur et gonflement des joues pendant 3 à 7 jours, maximum vers le 2e-3e jour.","Difficulté à ouvrir la bouche (trismus), temporaire.","Petits saignements le jour de l'intervention.","Hématome (bleu) sur la joue ou le cou."],
+ graves:["Alvéolite : douleur intense quelques jours après, due à une mauvaise cicatrisation de l'alvéole ; elle se soigne au cabinet.","Atteinte du nerf de la lèvre inférieure ou de la langue (dents du bas) : engourdissement ou fourmillements, le plus souvent temporaires, exceptionnellement définitifs.","Communication entre la bouche et le sinus (dents du haut).","Infection nécessitant un traitement antibiotique.","Fracture de la mâchoire : exceptionnelle."],
+ apres:"Appliquez du froid sur la joue, évitez de cracher, de fumer et de boire avec une paille les premiers jours. Alimentation tiède et molle. Prenez les médicaments prescrits.",
+ alerte:["Saignement qui ne s'arrête pas après 30 minutes de compression avec une compresse","Fièvre au-delà de 38,5 °C","Gonflement qui augmente après le 3e jour","Difficulté à avaler ou à respirer"],
+ sources:"Recommandations de la Société française de chirurgie orale (SFCO) — à vérifier et compléter."
+},
+{
+ id:"infiltration", titre:"Infiltration de corticoïdes", spec:"Rhumatologie", maj:"2026-10",
+ resume:"Injection d'un anti-inflammatoire puissant dans ou autour d'une articulation, d'un tendon ou près d'un nerf.",
+ but:"Diminuer l'inflammation et la douleur localement, quand les traitements par voie générale sont insuffisants ou mal tolérés. L'effet est souvent temporaire.",
+ deroule:["La peau est désinfectée soigneusement.","Le médecin injecte le produit avec une aiguille fine, parfois sous guidage échographique ou radiologique.","Un repos relatif de l'articulation est souvent conseillé pendant 24 à 48 heures."],
+ alternatives:"Médicaments par voie orale, kinésithérapie, orthèses, repos, autres injections (acide hyaluronique selon l'indication), chirurgie dans certains cas.",
+ frequents:["Douleur au point d'injection.","Réaction inflammatoire transitoire dans les 24-48 heures (articulation plus douloureuse), qui cède spontanément.","Rougeur et sensation de chaleur du visage pendant 1 à 2 jours.","Chez les personnes diabétiques : hausse transitoire de la glycémie ; surveillez-la de près."],
+ graves:["Infection de l'articulation : rare mais grave, elle nécessite un traitement en urgence.","Amincissement ou décoloration de la peau au point d'injection.","Fragilisation d'un tendon, exceptionnellement rupture.","Réaction allergique.","Hausse de la tension artérielle chez les personnes hypertendues."],
+ apres:"Prévenez le médecin avant l'injection si vous prenez des anticoagulants, si vous avez une infection en cours, de la fièvre, ou un diabète.",
+ alerte:["Douleur, gonflement et chaleur de l'articulation qui augmentent après 48 heures","Fièvre","Rougeur qui s'étend autour du point d'injection"],
+ sources:"Recommandations de la Société française de rhumatologie (SFR) — à vérifier et compléter."
+},
+{
+ id:"diu", titre:"Pose d'un dispositif intra-utérin (stérilet)", spec:"Gynécologie", maj:"2026-10",
+ resume:"Mise en place d'un DIU au cuivre ou hormonal dans l'utérus, à visée contraceptive.",
+ but:"Le DIU est une contraception de longue durée, très efficace et réversible : il peut être retiré à tout moment.",
+ deroule:["La pose se fait en consultation, en position gynécologique, et dure quelques minutes.","Un spéculum est posé, le col est désinfecté puis le DIU est introduit dans l'utérus à l'aide d'un inserteur.","Les fils sont coupés à environ 2 à 3 cm du col.","Une visite de contrôle est proposée après les règles suivantes ou dans les semaines suivant la pose."],
+ alternatives:"Pilule, implant, anneau, patch, préservatifs, contraception définitive. Votre professionnel de santé vous aide à choisir celle qui vous convient.",
+ frequents:["Douleur ou crampes pendant la pose et dans les heures qui suivent.","Malaise (vertiges, sueurs) pendant ou juste après la pose, le plus souvent passager.","Modification des règles : plus abondantes avec le DIU au cuivre, irrégulières ou plus rares avec le DIU hormonal."],
+ graves:["Expulsion partielle ou totale du DIU, surtout dans les premiers mois : il n'est alors plus efficace.","Perforation de l'utérus lors de la pose : rare, elle peut nécessiter une intervention pour retirer le DIU.","Infection de l'utérus ou des trompes, surtout dans les semaines qui suivent la pose.","Grossesse malgré le DIU : rare ; si elle survient, il existe un risque plus élevé de grossesse extra-utérine."],
+ apres:"Vous pouvez vérifier la présence des fils au fond du vagin après vos règles. Le DIU ne protège pas des infections sexuellement transmissibles.",
+ alerte:["Douleurs pelviennes intenses ou persistantes","Fièvre","Pertes vaginales inhabituelles ou malodorantes","Retard de règles ou test de grossesse positif","Fils non retrouvés ou DIU senti au niveau du col"],
+ sources:"Recommandations HAS et CNGOF sur la contraception — à vérifier et compléter."
+},
+{
+ id:"anesthesie-generale", titre:"Anesthésie générale", spec:"Anesthésie", maj:"2026-10",
+ resume:"Sommeil artificiel contrôlé permettant de réaliser une intervention sans douleur ni conscience.",
+ but:"Vous permettre de subir une intervention chirurgicale ou un examen sans douleur et sans souvenir, en maintenant vos fonctions vitales sous surveillance continue.",
+ deroule:["Une consultation d'anesthésie a lieu plusieurs jours avant l'intervention, puis une visite pré-anesthésique.","Les médicaments sont injectés par une perfusion, parfois associés à des gaz inhalés.","Votre respiration est assistée, souvent à l'aide d'un tube ou d'un masque placé dans la gorge.","Vous êtes surveillé(e) en salle de réveil avant de regagner votre chambre ou votre domicile."],
+ alternatives:"Selon l'intervention : anesthésie locorégionale (endormir seulement une partie du corps), anesthésie locale, sédation légère. Le médecin anesthésiste vous indique ce qui est possible dans votre cas.",
+ frequents:["Nausées et vomissements au réveil.","Mal de gorge ou voix enrouée, liés au tube respiratoire.","Frissons, sensation de froid.","Somnolence, troubles de la concentration dans les heures qui suivent."],
+ graves:["Lésion des dents lors de la mise en place du tube, surtout en cas de dents fragiles : signalez toute prothèse ou dent abîmée.","Confusion ou troubles de la mémoire transitoires, plus fréquents chez les personnes âgées.","Inhalation du contenu de l'estomac dans les poumons : d'où l'importance du jeûne.","Réaction allergique grave à un médicament.","Complications cardiaques ou respiratoires graves : très rares chez une personne en bonne santé."],
+ apres:"Respectez strictement les consignes de jeûne. Si vous rentrez chez vous le jour même, faites-vous raccompagner, ne conduisez pas et ne restez pas seul(e) la nuit suivante.",
+ alerte:["Difficulté à respirer","Douleur dans la poitrine","Confusion importante ou somnolence anormale","Vomissements persistants"],
+ sources:"Société française d'anesthésie et de réanimation (SFAR) — à vérifier et compléter."
+},
+{
+ id:"cataracte", titre:"Chirurgie de la cataracte", spec:"Ophtalmologie", maj:"2026-10",
+ resume:"Remplacement du cristallin opacifié par un implant artificiel, le plus souvent en ambulatoire.",
+ but:"Retrouver une vision plus nette en remplaçant le cristallin devenu opaque par une lentille artificielle définitive.",
+ deroule:["L'intervention dure en général 15 à 30 minutes, sous anesthésie locale (gouttes ou injection), parfois avec une sédation.","Le chirurgien réalise une petite incision, fragmente le cristallin par ultrasons et l'aspire.","Un implant est placé dans l'œil. Le plus souvent, aucun point de suture n'est nécessaire.","Un traitement par collyres est prescrit pendant plusieurs semaines."],
+ alternatives:"Il n'existe pas de traitement médicamenteux de la cataracte. Si la gêne est faible, l'intervention peut être reportée, avec une surveillance et une adaptation des lunettes.",
+ frequents:["Sensation de grain de sable, larmoiement, œil rouge pendant quelques jours.","Vision trouble les premiers jours.","Opacification de la membrane derrière l'implant (cataracte secondaire), parfois des mois ou années après : elle se traite simplement au laser."],
+ graves:["Infection grave à l'intérieur de l'œil (endophtalmie) : rare mais urgente, elle peut entraîner une perte de vision.","Décollement de la rétine : rare, il nécessite une nouvelle intervention.","Œdème de la cornée ou de la rétine (macula), qui peut ralentir la récupération.","Rupture de la capsule pendant l'intervention, pouvant nécessiter un geste complémentaire.","Erreur de puissance de l'implant nécessitant le port de lunettes, voire un changement d'implant."],
+ apres:"Ne frottez pas l'œil, portez la coque de protection la nuit les premiers jours, mettez vos collyres selon l'ordonnance et évitez les efforts violents et la baignade en piscine pendant la période indiquée.",
+ alerte:["Baisse brutale de la vision","Douleur de l'œil qui augmente","Rougeur importante qui s'aggrave","Apparition d'un voile, d'éclairs lumineux ou de nombreuses « mouches »"],
+ sources:"Société française d'ophtalmologie (SFO) — à vérifier et compléter."
+}
+];
+
+const app = document.getElementById('app');
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const store = {
+  get(k){ try{ return JSON.parse(localStorage.getItem(k)) }catch(e){ return null } },
+  set(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)) }catch(e){} }
+};
+let filtre = { q:"", spec:"Toutes" };
+
+function setNav(name){
+  document.querySelectorAll('[data-nav]').forEach(a => a.toggleAttribute('aria-current', a.dataset.nav === name) || a.removeAttribute('aria-current'));
+  document.querySelectorAll('[data-nav]').forEach(a => { if(a.dataset.nav===name) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
+}
+
+function renderHome(){
+  setNav('home');
+  const specs = ["Toutes", ...new Set(FICHES.map(f => f.spec))];
+  app.innerHTML = `
+  <section class="intro">
+    <div>
+      <h1>Des fiches claires à remettre à vos patients avant un acte.</h1>
+      <p>Chaque fiche explique le but de l'acte, son déroulement, les alternatives, les risques fréquents et les risques graves. Vous la personnalisez, l'imprimez, et gardez l'attestation de remise signée dans le dossier.</p>
+    </div>
+    <div class="howto">
+      <h2>Comment l'utiliser</h2>
+      <ol>
+        <li>Expliquez l'acte et ses risques à l'oral.</li>
+        <li>Choisissez la fiche et ajoutez les risques propres au patient.</li>
+        <li>Imprimez, remettez la fiche, faites signer l'attestation.</li>
+        <li>Conservez l'attestation et notez l'entretien dans le dossier.</li>
+      </ol>
+    </div>
+  </section>
+  <div class="tools">
+    <label class="search"><span class="sr" style="position:absolute;left:-9999px">Rechercher un acte</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Rechercher un acte, une spécialité…" value="${esc(filtre.q)}">
+    </label>
+    <div class="chips" role="group" aria-label="Filtrer par spécialité">
+      ${specs.map(s => `<button class="chip" data-spec="${esc(s)}" aria-pressed="${s===filtre.spec}">${esc(s)}</button>`).join('')}
+    </div>
+  </div>
+  <div class="list" id="list"></div>`;
+  const draw = () => {
+    const q = filtre.q.trim().toLowerCase();
+    const res = FICHES.filter(f => (filtre.spec==="Toutes" || f.spec===filtre.spec) &&
+      (!q || (f.titre+" "+f.spec+" "+f.resume).toLowerCase().includes(q)));
+    document.getElementById('list').innerHTML = res.length ? res.map(f => `
+      <a class="doc" href="#/fiche/${f.id}">
+        <span class="spec">${esc(f.spec)}</span>
+        <h3>${esc(f.titre)}</h3>
+        <p>${esc(f.resume)}</p>
+        <span class="meta"><span>Mise à jour ${esc(fmtMois(f.maj))}</span><span>Ouvrir la fiche</span></span>
+      </a>`).join('') :
+      `<div class="empty" style="grid-column:1/-1">Aucune fiche ne correspond à « ${esc(filtre.q)} ». Essayez un autre mot ou choisissez « Toutes ».</div>`;
+  };
+  document.getElementById('q').addEventListener('input', e => { filtre.q = e.target.value; draw(); });
+  document.querySelectorAll('.chip').forEach(b => b.addEventListener('click', () => {
+    filtre.spec = b.dataset.spec;
+    document.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c===b));
+    draw();
+  }));
+  draw();
+}
+
+function fmtMois(m){ const [y,mo]=m.split('-'); return ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."][+mo-1]+" "+y; }
+function fmtDate(d){ if(!d) return ""; const [y,m,j]=d.split('-'); return `${j}/${m}/${y}`; }
+const li = arr => `<ul>${arr.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
+
+function renderFiche(id){
+  setNav('home');
+  const f = FICHES.find(x => x.id===id);
+  if(!f){ app.innerHTML = `<a class="back" href="#/">Retour aux fiches</a><div class="empty">Cette fiche n'existe pas ou a été déplacée. Revenez à la liste pour en choisir une autre.</div>`; return; }
+  const praticien = store.get('praticien') || { nom:"", lieu:"" };
+  const today = new Date().toISOString().slice(0,10);
+  const v = { nom:praticien.nom, lieu:praticien.lieu, patient:"", date:today, perso:"" };
+
+  app.innerHTML = `
+  <a class="back noprint" href="#/">Retour aux fiches</a>
+  <div class="fiche-layout">
+    <aside class="panel" aria-label="Personnaliser la fiche">
+      <h2>Personnaliser</h2>
+      <p class="hint">Les champs s'affichent directement sur la fiche. Votre nom et votre lieu d'exercice sont mémorisés sur cet appareil.</p>
+      <div class="field"><label for="f-nom">Praticien</label><input id="f-nom" value="${esc(v.nom)}" placeholder="Dr Claire Martin"></div>
+      <div class="field"><label for="f-lieu">Cabinet ou établissement</label><input id="f-lieu" value="${esc(v.lieu)}" placeholder="Cabinet, ville"></div>
+      <div class="field"><label for="f-patient">Patient</label><input id="f-patient" placeholder="Nom et prénom"></div>
+      <div class="field"><label for="f-date">Date de remise</label><input id="f-date" type="date" value="${v.date}"></div>
+      <div class="field"><label for="f-perso">Risques propres à ce patient</label><textarea id="f-perso" placeholder="Ex. : traitement anticoagulant, diabète, antécédents…"></textarea></div>
+      <button class="btn" id="print">Imprimer la fiche</button>
+      <p class="printnote">Si l'impression ne s'ouvre pas, utilisez Ctrl + P (ou Cmd + P sur Mac).</p>
+    </aside>
+    <div class="sheet-wrap">
+      <article class="sheet" id="sheet"></article>
+    </div>
+  </div>`;
+
+  const draw = () => {
+    document.getElementById('sheet').innerHTML = `
+      <header>
+        <span><strong>${esc(v.nom) || '<span class="blank">&nbsp;</span>'}</strong><br>${esc(v.lieu)}</span>
+        <span style="text-align:right">Fiche d'information patient<br>${esc(f.spec)} — version ${esc(fmtMois(f.maj))}</span>
+      </header>
+      <h1>${esc(f.titre)}</h1>
+      <p class="sub">Cette fiche complète les explications que vous avez reçues oralement. Lisez-la tranquillement et posez toutes vos questions avant de prendre votre décision.</p>
+
+      <h2>Pourquoi cet acte vous est proposé</h2><p>${esc(f.but)}</p>
+      <h2>Comment il se déroule</h2>${li(f.deroule)}
+      <h2>Les autres possibilités</h2><p>${esc(f.alternatives)}</p>
+      <div class="box freq"><h2>Inconvénients et risques fréquents</h2>${li(f.frequents)}</div>
+      <div class="box grave"><h2>Risques rares mais graves</h2>${li(f.graves)}<p style="margin-bottom:0">Aucun acte médical n'est sans risque, même réalisé dans les meilleures conditions. Ces complications sont rares, mais vous devez les connaître pour décider en connaissance de cause.</p></div>
+      ${v.perso.trim() ? `<div class="box perso"><h2>Points spécifiques à votre situation</h2><p style="white-space:pre-line">${esc(v.perso)}</p></div>` : ''}
+      <h2>Après l'acte</h2><p>${esc(f.apres)}</p>
+      <div class="box alert"><h2>Consultez sans attendre en cas de</h2>${li(f.alerte)}<p style="margin-bottom:0">En dehors des heures d'ouverture, appelez le 15.</p></div>
+      <p class="src">Sources : ${esc(f.sources)}</p>
+
+      <div class="cut"><span>Attestation à conserver dans le dossier</span></div>
+      <section class="attest">
+        <h2>Attestation de remise d'information</h2>
+        <p>Je soussigné(e) ${esc(v.patient) || '<span class="blank">&nbsp;</span>'} reconnais avoir reçu de ${esc(v.nom) || '<span class="blank">&nbsp;</span>'}, le ${esc(fmtDate(v.date)) || '<span class="blank">&nbsp;</span>'}, une information orale sur l'acte suivant : <strong>${esc(f.titre)}</strong>, ainsi que la présente fiche écrite.</p>
+        <p>J'ai été informé(e) du but de l'acte, de son déroulement, des alternatives, des risques fréquents et des risques graves, y compris exceptionnels. J'ai pu poser mes questions et j'ai obtenu des réponses claires.</p>
+        <p>Je sais que je peux revenir sur ma décision à tout moment.</p>
+        <div class="sign"><div>Signature du patient<br>(ou de son représentant légal)</div><div>Signature du praticien</div></div>
+      </section>`;
+  };
+  draw();
+  const bind = (sel,key,save) => document.getElementById(sel).addEventListener('input', e => {
+    v[key]=e.target.value; draw();
+    if(save) store.set('praticien',{nom:v.nom,lieu:v.lieu});
+  });
+  bind('f-nom','nom',true); bind('f-lieu','lieu',true); bind('f-patient','patient'); bind('f-date','date'); bind('f-perso','perso');
+  document.getElementById('print').addEventListener('click', () => { try{ window.print() }catch(e){} });
+  window.scrollTo(0,0);
+}
+
+function renderLegal(){
+  setNav('legal');
+  app.innerHTML = `
+  <article class="legal">
+    <h1>Ce que dit la loi sur l'information du patient</h1>
+    <p>En France, tout patient a le droit d'être informé sur son état de santé et sur les actes qui lui sont proposés. Cette obligation pèse sur chaque professionnel de santé, dans le cadre de ses compétences.</p>
+
+    <h2>Le contenu de l'information</h2>
+    <p>L'article L1111-2 du Code de la santé publique prévoit que l'information porte sur les investigations, traitements ou actions de prévention proposés : leur utilité, leur urgence éventuelle, leurs conséquences, les risques fréquents ou graves normalement prévisibles, les autres solutions possibles et les conséquences prévisibles en cas de refus.</p>
+
+    <h2>L'oral d'abord, l'écrit en complément</h2>
+    <p>L'information est délivrée au cours d'un entretien individuel. La Haute Autorité de santé rappelle que le document écrit vient compléter cet échange, il ne le remplace pas. Une fiche remise sans explication ne suffit donc pas à remplir l'obligation.</p>
+
+    <h2>Qui doit prouver l'information</h2>
+    <p>En cas de litige, c'est au professionnel ou à l'établissement de démontrer que l'information a été délivrée. Cette preuve peut être apportée par tout moyen. L'attestation signée, la fiche remise et une mention dans le dossier médical (date, contenu de l'entretien, questions posées) forment ensemble un faisceau d'éléments solide.</p>
+
+    <h2>Ce que permettent ces fiches</h2>
+    <p>Elles structurent l'information selon les points exigés par la loi, laissent une trace écrite datée et prévoient un espace pour les risques propres à chaque patient, qui doivent toujours être abordés.</p>
+
+    <div class="warnbox">
+      <strong>Avant de les utiliser.</strong> Relisez chaque fiche, adaptez-la à votre technique et aux recommandations à jour de votre société savante. Pour sécuriser votre pratique, faites valider vos modèles par votre assureur en responsabilité civile professionnelle ou un juriste en droit de la santé.
+    </div>
+  </article>`;
+  window.scrollTo(0,0);
+}
+
+function route(){
+  const h = location.hash.replace(/^#/, '') || '/';
+  if(h.startsWith('/fiche/')) renderFiche(h.split('/')[2]);
+  else if(h==='/cadre-legal') renderLegal();
+  else renderHome();
+}
+window.addEventListener('hashchange', route);
+route();
+</script>
+</body>
+</html>
